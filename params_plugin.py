@@ -16,7 +16,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class WebBadrequestError(WebError):
+class WebBadrequestError(bottle.HTTPError):
     def __init__(self, body=""):
         WebError.__init__(self, 400, body or "Bad request!")
 
