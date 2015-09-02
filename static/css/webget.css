@@ -1,0 +1,22 @@
+body {
+    width: 1000px;
+    margin: 5px auto 5px auto;
+}
+
+.header {
+    padding: 10px;
+}
+
+.header-right {
+    padding-right: 50px;
+    padding-top: 20px;
+}
+
+.error {
+    color: #FF0000;
+}
+
+.progress-bar-adj {
+    margin-top: 10px;
+    margin-bottom: -10px;
+}
