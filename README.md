@@ -20,7 +20,7 @@
     {
         "down_dir" : "下载目录，默认为：~/down",
         "wget_dir" : "wget所在的目录，默认为：/usr/local/bin",
-        "web_down" : "webserver的下载路径，默认为/webdown，配置webserver映射到下载目录",
+        "web_down" : "webserver的下载路径，默认为/wget/static/down，供测试之用，可配置通过webserver映射到下载目录，如/webdown",
         "web_path" : "webserver的webget路径，默认为/wget",
         "web_addr" : "绑定的IP，默认为：0.0.0.0，允许所有地址访问，如有可作反向代理的webserver，建议改为127.0.0.1",
         "web_port" : "绑定的端口，默认为：8111",
@@ -39,7 +39,7 @@
     }
 
     location /webdown {
-        root /path_to/webget;
+        root /path_to_webdown_parent_dir;
         index index.html;
         autoindex off;
     }
