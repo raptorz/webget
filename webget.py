@@ -10,7 +10,7 @@ import sys
 PY3=sys.version>"3"
 
 import os
-from os.path import dirname, abspath, getsize, join as joinpath
+from os.path import getsize, join as joinpath
 
 import requests
 

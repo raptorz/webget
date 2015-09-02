@@ -5,7 +5,7 @@
     :copyright: 20150811 by raptor.zh@gmail.com.
 """
 
-from os.path import expanduser
+from os.path import dirname, abspath, expanduser, join as joinpath
 import json
 
 import logging
