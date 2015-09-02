@@ -56,6 +56,7 @@ def get_status(job):
 def subproc_job(filename, url):
 #    filename = joinpath(config["down_dir"], filename)
     cmd = "%s -q -c -O %s \"%s\"" % (joinpath(config["wget_dir"], "wget"), filename, url)
+    logger.debug(cmd)
     p = Popen(cmd_split(cmd), cwd=config["down_dir"], shell=False)
     return p
 
