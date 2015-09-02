@@ -5,9 +5,6 @@
 # author : raptor.zh@gmail.com
 # create : 2015/03/18
 #          2015/08/10
-from __future__ import unicode_literals
-import sys
-PY3=sys.version>"3"
 
 import os
 from os.path import getsize, join as joinpath
@@ -54,7 +51,6 @@ def get_status(job):
 
 
 def subproc_job(filename, url):
-#    filename = joinpath(config["down_dir"], filename)
     cmd = "%s -q -c -O %s \"%s\"" % (joinpath(config["wget_dir"], "wget"), filename, url)
     logger.debug(cmd)
     p = Popen(cmd_split(cmd), cwd=config["down_dir"], shell=False)
