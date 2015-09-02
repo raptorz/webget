@@ -11,11 +11,14 @@
 import inspect
 import bottle
 
-from webexceptions import WebBadrequestError
-
 import logging
 
 logger = logging.getLogger(__name__)
+
+
+class WebBadrequestError(WebError):
+    def __init__(self, body=""):
+        WebError.__init__(self, 400, body or "Bad request!")
 
 
 # PluginError is defined in bottle >= 0.10

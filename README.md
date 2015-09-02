@@ -9,22 +9,23 @@
 
 ## 安装
 
-pkg install wget # for FreeBSD
-pip install -r requirements.txt
-python webget.py
+    pkg install wget # for FreeBSD
+    pip install -r requirements.txt
+    python webget.py
 
 ## 配置
 
 配置文件为当前目录下的config.json，内容为：
-{
-    "down_dir" : "下载目录，默认为：~/down",
-    "wget_dir" : "wget所在的目录，默认为：/usr/local/bin",
-    "web_down" : "webserver的下载路径，默认为/webdown，配置webserver映射到下载目录",
-    "web_path" : "webserver的webget路径，默认为/wget",
-    "web_addr" : "绑定的IP，默认为：0.0.0.0，允许所有地址访问，如有可作反向代理的webserver，建议改为127.0.0.1",
-    "web_port" : "绑定的端口，默认为：8111",
-    "debug"    : "默认为False",
-}
+
+    {
+        "down_dir" : "下载目录，默认为：~/down",
+        "wget_dir" : "wget所在的目录，默认为：/usr/local/bin",
+        "web_down" : "webserver的下载路径，默认为/webdown，配置webserver映射到下载目录",
+        "web_path" : "webserver的webget路径，默认为/wget",
+        "web_addr" : "绑定的IP，默认为：0.0.0.0，允许所有地址访问，如有可作反向代理的webserver，建议改为127.0.0.1",
+        "web_port" : "绑定的端口，默认为：8111",
+        "debug"    : "默认为False",
+    }
 
 反向代理的配置：
 nginx:
