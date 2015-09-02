@@ -28,7 +28,9 @@
     }
 
 反向代理的配置：
-nginx:
+
+* nginx:
+
     location /wget {
         proxy_pass http://127.0.0.1:8111;
         include        wsgi_params;
