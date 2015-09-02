@@ -30,8 +30,8 @@ def get_fullname(*args):
 
 
 try:
-    with open(get_fullname("config.json"), "r"):
-        config = json.loads(read())
+    with open(get_fullname("config.json"), "r") as f:
+        config = json.loads(f.read())
     config_default.update(config)
     config = config_default
 except IOError:
