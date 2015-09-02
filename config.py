@@ -24,8 +24,13 @@ config_default = {
 }
 
 
+def get_fullname(*args):
+    root = dirname(abspath(__file__))
+    return joinpath(root, joinpath(*args)) if len(args) > 0 else root
+
+
 try:
-    with open("config.json", "r"):
+    with open(get_fullname("config.json"), "r"):
         config = json.loads(read())
     config_default.update(config)
     config = config_default

@@ -19,16 +19,11 @@ from subprocess import Popen
 from shlex import split as cmd_split
 
 from params_plugin import ParamsPlugin
-from config import config
+from config import config, get_fullname
 
 import logging
 
 logger = logging.getLogger(__name__)
-
-
-def get_fullname(*args):
-    root = dirname(abspath(__file__))
-    return joinpath(root, joinpath(*args)) if len(args) > 0 else root
 
 
 app = Bottle()
