@@ -43,7 +43,7 @@ Filename: <input type="text" name="filename" id="filename" size="60" required/>
     <thead>
       <tr>
         <th>File name and source URL</th>
-        <th>Size(Bytes)</th>
+        <th>Size</th>
         <th>Status</th>
         <th>Action</th>
       </tr>
@@ -54,7 +54,19 @@ Filename: <input type="text" name="filename" id="filename" size="60" required/>
     shortname = j["filename"] if len(j["filename"]) < 32 else "%s..%s" % (j["filename"][:25], j["filename"][-4:])
 %>      <tr>
             <td><a href="${j['url']}" title="${j['filename']}">${shortname}</a></td>
-            <td>${j['size']}</td>
+            <td><div class="pop-tooltip" title="${j['size']}"><%
+unit = "Bytes"
+size = j['size']
+if size > 1024:
+    unit = "KBytes"
+    size = size / 1024.0
+    if size > 1024:
+        unit = "MBytes"
+        size = size / 1024.0
+        if size > 1024:
+            unit = "GBytes"
+            size = size / 1024.0
+size = "%.1f %s" % (size, unit) %>${size}</div></td>
         <td>
 % if j['status']=='Done':
             <a href="${web_down}/${j['filename']}" class="pop-tooltip" title="Fetch downloaded file now">Job completed!</a>
