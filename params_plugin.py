@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 class WebBadrequestError(bottle.HTTPError):
     def __init__(self, body=""):
-        WebError.__init__(self, 400, body or "Bad request!")
+        bottle.HTTPError.__init__(self, 400, body or "Bad request!")
 
 
 # PluginError is defined in bottle >= 0.10

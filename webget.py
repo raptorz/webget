@@ -5,6 +5,8 @@
 # author : raptor.zh@gmail.com
 # create : 2015/03/18
 #          2015/08/10
+import sys
+PY3=sys.version>"3"
 
 import os
 from os.path import getsize, join as joinpath
@@ -13,7 +15,7 @@ import requests
 
 from bottle import Bottle, run, request, response, redirect, static_file, mako_view as view
 from subprocess import Popen
-from shlex import split as cmd_split
+import shlex
 
 from params_plugin import ParamsPlugin
 from config import config, get_fullname
@@ -31,10 +33,14 @@ app.install(ParamsPlugin())
 jobdata = []
 
 
+def fnencode(filename):
+    return filename if PY3 else filename.encode("utf-8")
+
+
 def get_status(job):
     try:
         filename = joinpath(config["down_dir"], job["filename"])
-        prog = 0 if job["size"]==0 else int(getsize(filename) * 100.0 / job["size"] + 0.5)
+        prog = 0 if job["size"]==0 else int(getsize(fnencode(filename)) * 100.0 / job["size"] + 0.5)
     except os.error:
         prog = 0
     status = "Doing"
@@ -52,8 +58,9 @@ def get_status(job):
 
 def subproc_job(filename, url):
     cmd = "%s -q -c -O %s \"%s\"" % (joinpath(config["wget_dir"], "wget"), filename, url)
+    cmd = fnencode(cmd)
     logger.debug(cmd)
-    p = Popen(cmd_split(cmd), cwd=config["down_dir"], shell=False)
+    p = Popen(shlex.split(cmd), cwd=config["down_dir"], shell=False)
     return p
 
 
@@ -91,7 +98,7 @@ def findpid(pid):
 
 def deljob(job):
     filename = joinpath(config["down_dir"], job["filename"])
-    os.remove(filename)
+    os.remove(fnencode(filename))
     del jobdata[jobdata.index(job)]
 
 
