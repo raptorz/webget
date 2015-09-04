@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-    botas params
+    ParamsPlugin
     ~~~~~~~~~~~~~~~~
 
-    params plugins for bottle.
+    request parameters plugin for bottle.
 
     :copyright: 20150426 by raptor.zh@gmail.com.
     2015-09-02 for python3
