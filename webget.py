@@ -13,11 +13,12 @@ from os.path import getsize, join as joinpath
 
 import requests
 
-from bottle import Bottle, run, request, response, redirect, static_file, mako_view as view
+from bottle import Bottle, run, request, response, redirect, static_file, mako_template
 from subprocess import Popen
 import shlex
 
 from params_plugin import ParamsPlugin
+from view_plugin import ViewPlugin
 from config import config, get_fullname
 
 import logging
@@ -27,6 +28,7 @@ logger = logging.getLogger(__name__)
 
 app = Bottle()
 app.install(ParamsPlugin())
+app.install(ViewPlugin(template=mako_template))
 
 
 # dict: pid, filename, url, size, proc
@@ -113,8 +115,7 @@ def get_static(filename):
     return static_file(filename, root=get_fullname("static"))
 
 
-@app.get("/")
-@view("index.html")
+@app.get("/", view="index.html")
 def get_index():
     return dict(joblist=joblist(jobdata), base=config['web_path'], web_down=config['web_down'])
 
