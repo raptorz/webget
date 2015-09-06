@@ -62,7 +62,8 @@ class ParamsPlugin(object):
                 kw = None
             if kw:
                 keys = set(kw.keys()) if argspec.keywords else set(kw.keys()).intersection(set(argspec.args[len(args):]))
-                [kwargs.__setitem__(k,kw.__getattr__(k)) for k in keys]
+                fn = (lambda d,k: d.__getitem__(k)) if _json_params else (lambda d,k: d.__getattr__(k))
+                [kwargs.__setitem__(k,fn(kw,k)) for k in keys]
             try:
                 return callback(*args, **kwargs)
             except TypeError:
