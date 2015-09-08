@@ -62,7 +62,8 @@ class ParamsPlugin(object):
                 kw = None
             if kw:
                 keys = set(kw.keys()) if argspec.keywords else set(kw.keys()).intersection(set(argspec.args[len(args):]))
-                fn = (lambda d,k: d.__getitem__(k)) if _json_params else (lambda d,k: d.__getattr__(k))
+                fn = (lambda d,k: d.__getitem__(k)) if _json_params or PY3 and bottle.request.content_type.find(\
+                        "multipart/form-data")>=0 else (lambda d,k: d.__getattr__(k))
                 [kwargs.__setitem__(k,fn(kw,k)) for k in keys]
             try:
                 return callback(*args, **kwargs)
