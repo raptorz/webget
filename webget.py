@@ -13,12 +13,11 @@ from os.path import getsize, join as joinpath
 
 import requests
 
-from bottle import Bottle, run, request, response, redirect, static_file, mako_template
+from bottle import Bottle, run, request, response, redirect, static_file, MakoTemplate
 from subprocess import Popen
 import shlex
 
 from params_plugin import ParamsPlugin
-from view_plugin import ViewPlugin
 from config import config, get_fullname
 
 import logging
@@ -28,10 +27,13 @@ logger = logging.getLogger(__name__)
 
 app = Bottle()
 app.install(ParamsPlugin())
-app.install(ViewPlugin(template=mako_template))
+
+
+mako = {"template_adapter": MakoTemplate}
 
 
 # dict: pid, filename, url, size, proc
+# todo: if hash, save a hash file for check
 jobdata = []
 
 
@@ -115,13 +117,13 @@ def get_static(filename):
     return static_file(filename, root=get_fullname("static"))
 
 
-@app.get("/", view="index.html")
+@app.get("/", template=("index.html", mako))
 def get_index():
     return dict(joblist=joblist(jobdata), base=config['web_path'], web_down=config['web_down'])
 
 
 @app.post("/")
-def post_index(url, filename):
+def post_index(url, filename, hashmethod, hashcode):
     url = url.strip()
     filename = filename.strip()
     if filename and url:
@@ -133,6 +135,8 @@ def post_index(url, filename):
                 proc = subproc_job(filename, url)
                 job = dict(pid=proc.pid, filename=filename, url=url, size=size, proc=proc)
                 jobdata.insert(0, job)
+                with open(".".join([filename, hashmethod]), "w") as f:
+                    f.write(hashcode)
             except KeyError:
                 pass
     redirect("/%s" % config["web_path"])

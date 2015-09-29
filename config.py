@@ -20,7 +20,7 @@ config_default = {
     "web_path": "wget",
     "web_addr": "127.0.0.1",
     "web_port": 8111,
-    "debug": False,
+    "debug": True,
 }
 
 

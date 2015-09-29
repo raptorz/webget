@@ -1,24 +1,24 @@
 # -*- coding: utf-8 -*-
 """
-    ParamsPlugin
+    bottle plugin of request parameters
     ~~~~~~~~~~~~~~~~
 
-    request parameters plugin for bottle.
+    request parameters plugins for bottle.
 
     :copyright: 20150426 by raptor.zh@gmail.com.
     2015-09-02 for python3
 """
+import sys
+PY3=sys.version>"3"
+
 import inspect
 import bottle
+
+from webexceptions import WebBadrequestError
 
 import logging
 
 logger = logging.getLogger(__name__)
-
-
-class WebBadrequestError(bottle.HTTPError):
-    def __init__(self, body=""):
-        bottle.HTTPError.__init__(self, 400, body or "Bad request!")
 
 
 # PluginError is defined in bottle >= 0.10
@@ -42,12 +42,12 @@ class ParamsPlugin(object):
             if not isinstance(other, ParamsPlugin):
                 continue
             raise bottle.PluginError("Found another ParamsPlugin be installed.")
-    
+
     def apply(self, callback, route):
         pluginconf = route.config
         _json_params = pluginconf.get("json_params", self.json_params)
 
-        argspec = inspect.getargspec(route.callback)
+        argspec = inspect.signature(route.callback) if PY3 else inspect.getargspec(route.callback)
 
         def wrapper(*args, **kwargs):
             try:
@@ -61,7 +61,11 @@ class ParamsPlugin(object):
             except:
                 kw = None
             if kw:
-                keys = set(kw.keys()) if argspec.keywords else set(kw.keys()).intersection(set(argspec.args[len(args):]))
+                keywords = [p for p in argspec.parameters.values() if p.kind==inspect.Parameter.VAR_KEYWORD] if PY3 else argspec.keywords
+                argkeys = [p.name for p in argspec.parameters.values() if p.kind==inspect.Parameter.POSITIONAL_OR_KEYWORD] if PY3 else argspec.args
+                keys = set(kw.keys()) - set(kwargs.keys())
+                if not keywords:
+                    keys = keys & set(argkeys[len(args):])
                 fn = (lambda d,k: d.__getitem__(k)) if _json_params or PY3 and bottle.request.content_type.find(\
                         "multipart/form-data")>=0 else (lambda d,k: d.__getattr__(k))
                 [kwargs.__setitem__(k,fn(kw,k)) for k in keys]

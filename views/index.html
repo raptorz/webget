@@ -30,7 +30,11 @@
             <div class="modal-body">
 URL: <br/>
 <textarea id="joburl" name="url" rows="8" cols="75" required></textarea><br/>
-Filename: <input type="text" name="filename" id="filename" size="60" required/>
+Filename: <input type="text" name="filename" id="filename" size="67" required/><br/>
+Hash(Option): 
+<input type="radio" name="hashmethod" value="md5" checked="1" />MD5
+<input type="radio" name="hashmethod" value="sha1" />SHA1
+<input type="text" name="hashcode" id="hashcode" size="49" maxlength="40" />
             </div>
             <div class="modal-footer">
                 <input type="submit" id="submitjob" class="btn btn-material-indigo" name="submit" value="Submit" />
